@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 #include "hello.h"
 
 int main() {
@@ -14,5 +13,9 @@ int main() {
   }
 
   return 0;
+}
+
+void print32(unsigned int value) {
+  printf("%08X\n", value);
 }
 
