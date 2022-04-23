@@ -1,7 +1,7 @@
 all: hello
 
 clean:
-	rm hello hello.o
+	rm hello *.o
 
 hello: hello.o main.o
 	gcc -o hello hello.o main.o -lgcc
