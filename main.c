@@ -8,7 +8,7 @@ int main() {
   printf("Triangle numbers ftw!\n");
 
   for (i = 1; i < 20; i++) {
-    result = thang(0, i);
+    result = triangle_numbers_by_addition(0, i);
     printf("%d %d\n", i, result);
   }
 

@@ -1,3 +1,3 @@
-int thang(int x, int y); 
+int triangle_numbers_by_addition(int x, int y); 
 
 
