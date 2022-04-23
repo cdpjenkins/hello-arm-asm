@@ -5,6 +5,7 @@ var2: .word 4
 .text
 .globl triangle_numbers_by_addition
 .globl triangle_numbers_by_multiplication
+.globl divide_me_do
 
 triangle_numbers_by_addition:
     push {fp, lr}
@@ -26,4 +27,8 @@ triangle_numbers_by_multiplication:
     mul r0, r2, r1
     lsr r0, r0, #1
 
+    bx lr
+
+divide_me_do:
+    udiv r0, r0, r1
     bx lr

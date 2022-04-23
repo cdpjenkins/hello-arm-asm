@@ -3,7 +3,7 @@
 #include "hello.h"
 
 int main() {
-  int result, i;
+  int result, i, j;
 
   printf("Triangle numbers ftw!\n");
 
@@ -15,6 +15,13 @@ int main() {
 
   for (i = 1; i < 20; i++) {
     result = triangle_numbers_by_multiplication(i);
+    printf("%d %d\n", i, result);
+  }
+
+  printf("Trying division!\n");
+
+  for (i = 1; i < 100; i++) {
+    result = divide_me_do(100, i);
     printf("%d %d\n", i, result);
   }
 
