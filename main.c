@@ -3,12 +3,16 @@
 
 #include "hello.h"
 
-main() {
-  int result;
+int main() {
+  int result, i;
 
-  printf("Hello world!\n");
+  printf("Triangle numbers ftw!\n");
 
-  result = thang(1, 2);
-  printf("%d\n", result);
+  for (i = 1; i < 20; i++) {
+    result = thang(0, i);
+    printf("%d %d\n", i, result);
+  }
+
+  return 0;
 }
 
