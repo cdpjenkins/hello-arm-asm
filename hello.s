@@ -16,5 +16,4 @@ thang:
     bl print32
     pop {r0,r1}
 
-    pop {fp, lr}    // could totally pop into pc...
-    bx lr
+    pop {fp, pc}
