@@ -12,6 +12,12 @@ int main() {
     printf("%d %d\n", i, result);
   }
 
+
+  for (i = 1; i < 20; i++) {
+    result = triangle_numbers_by_multiplication(i);
+    printf("%d %d\n", i, result);
+  }
+
   return 0;
 }
 
