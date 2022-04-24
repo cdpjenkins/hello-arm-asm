@@ -14,9 +14,9 @@ loop:
     subs r1,r1,#1
     bne loop
 
-    push {r0,r1}
+    push {r0}
     bl print32
-    pop {r0,r1}
+    pop {r0}
 
     pop {fp, pc}
 
