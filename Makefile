@@ -1,4 +1,5 @@
-OBJS = hello.o main.o find_max.o
+OBJS = hello.o main.o find_max.o hailstone.s
+CFLAGS = -g -O3
 
 all: hello
 
@@ -8,13 +9,9 @@ clean:
 hello: $(OBJS)
 	gcc -o hello $(OBJS) -lgcc
 
-hello.o: hello.s
-	as -g -o hello.o hello.s
-
 %.o: %.s *.h
 	as -g -o $@ $<
 
-
 main.o: main.c
-	gcc -g -c main.c
+	gcc $(CFLAGS) -c main.c
 
