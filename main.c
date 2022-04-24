@@ -43,8 +43,8 @@ void print_max() {
 int main() {
   print_triangle_numbers_by_addition();
   print_triangle_numbers_by_multiplication();
-  try_division();
-  print_max();
+  // try_division();
+  // print_max();
 
   return 0;
 }
