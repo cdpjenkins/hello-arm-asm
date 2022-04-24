@@ -1,4 +1,4 @@
-OBJS = main.o 
+OBJS = main.o identity.o
 CFLAGS = -g -O3
 
 all: main
@@ -6,7 +6,7 @@ all: main
 clean:
 	rm main *.o
 
-hello: $(OBJS)
+main: $(OBJS)
 	gcc -o main $(OBJS)
 
 %.o: %.s *.h
