@@ -1,4 +1,4 @@
-OBJS = main.o identity.o
+OBJS = main.o identity.o zero.o
 CFLAGS = -g -O3
 
 all: main

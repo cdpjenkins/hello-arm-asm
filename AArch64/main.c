@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 
 #include "asm.h"
 
@@ -11,4 +12,9 @@ int main() {
     result = identity(arg);
 
     printf("%d\n", result);
+
+    printf("%016X\n", zero());
+
+    uint64_t result64 = deadbeef1cec0fee();
+    printf("%016llX\n", result64);
 }
