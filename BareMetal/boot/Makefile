@@ -6,7 +6,7 @@ clean:
 kernel8.img: kernel
 	aarch64-unknown-linux-gnu-objcopy -O binary kernel kernel8.img
 
-kernel: boot.o main.o
+kernel: boot.o main.o lib.o
 	aarch64-unknown-linux-gnu-ld -nostdlib -T link.lds -o kernel boot.o main.o
 
 %.o: %.s
