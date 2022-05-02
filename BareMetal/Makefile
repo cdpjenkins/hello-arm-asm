@@ -1,4 +1,4 @@
-OBJS=boot.o lib.o uart_asm.o uart.o main.o
+OBJS=boot.o lib.o uart.o main.o
 CFLAGS=-O3
 
 all: kernel8.img

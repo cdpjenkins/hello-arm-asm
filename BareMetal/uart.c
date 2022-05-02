@@ -3,14 +3,23 @@
 #define IO_BASE_ADDR    0x3f200000
 #define UART0_DR        ((volatile unsigned int *) (IO_BASE_ADDR + 0x1000))
 #define UART0_FR        ((volatile unsigned int *) (IO_BASE_ADDR + 0x1018))
-#define UART0_CR        ((volatile unsigned int *) (IO_BASE_ADDR + 0x1030))
-#define UART0_LCRH      ((volatile unsigned int *) (IO_BASE_ADDR + 0x102c))
-#define UART0_FBRD      ((volatile unsigned int *) (IO_BASE_ADDR + 0x1028))
 #define UART0_IBRD      ((volatile unsigned int *) (IO_BASE_ADDR + 0x1024))
+#define UART0_FBRD      ((volatile unsigned int *) (IO_BASE_ADDR + 0x1028))
+#define UART0_LCRH      ((volatile unsigned int *) (IO_BASE_ADDR + 0x102c))
+#define UART0_CR        ((volatile unsigned int *) (IO_BASE_ADDR + 0x1030))
 #define UART0_IMSC      ((volatile unsigned int *) (IO_BASE_ADDR + 0x1038))
 
 #define RXFE            4
 #define TXFF            5
+
+void uart_init() {
+    *UART0_CR = 0;
+    *UART0_IBRD = 26;                                   // TODO what's this then eh?
+    *UART0_FBRD = 0;
+    *UART0_LCRH = (1 << 4) | (1 << 5) | (1 << 6);       // TODO name the bits
+    *UART0_IMSC = 0;
+    *UART0_CR = (1 << 0) | (1 << 8) | (1 << 9);         // TODO name the bits
+}
 
 int uart_read_char() {
     while (*UART0_FR & (1 << RXFE)) {
@@ -19,8 +28,6 @@ int uart_read_char() {
 
     return *UART0_DR;
 }
-
-
 
 void uart_write_char(unsigned int ch) {
     while (*UART0_FR & (1 << TXFF)) {
