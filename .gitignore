@@ -2,5 +2,5 @@ hello
 *.o
 .vscode
 
-BareMetal/boot/kernel
-BareMetal/boot/kernel8.img
+BareMetal/kernel
+BareMetal/kernel8.img
