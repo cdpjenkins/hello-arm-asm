@@ -9,30 +9,7 @@
 .equ UART0_IMSC,      IO_BASE_ADDR + 0x1038
 
 .section .text
-.global write_string
-.global write_char
-.global read_char
 .global init_uart
-
-write_string:
-    stp x29, x30, [sp, #-16]!
-    str x19, [sp, #-16]!
-
-    mov x19, x0
-
-1:
-    ldrb w0, [x19], #1
-    tst w0, w0
-    beq 2f
-
-    bl uart_write_char
-    b 1b
-    
-2:
-    ldr x19, [sp], #16
-    ldp x29, x30, [sp], #16
-    ret
-
 
 init_uart:
     stp x29, x30, [sp, #-16]!

@@ -29,3 +29,11 @@ void uart_write_char(unsigned int ch) {
 
     *UART0_DR = ch;
 }
+
+void uart_write_string(const char *str) {
+    char ch;
+
+    while (ch = *str++) {
+        uart_write_char(ch);
+    }
+}
