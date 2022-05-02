@@ -1,4 +1,5 @@
-OBJS=boot.o lib.o uart.o main.o
+OBJS=boot.o lib.o uart_asm.o uart.o main.o
+CFLAGS=-O3
 
 all: kernel8.img
 
@@ -15,4 +16,4 @@ kernel: $(OBJS)
 	aarch64-unknown-linux-gnu-gcc -c $< -o $@
 
 %.o: %.c
-	aarch64-unknown-linux-gnu-gcc -c $< -o $@
+	aarch64-unknown-linux-gnu-gcc $(CFLAGS)  -c $< -o $@

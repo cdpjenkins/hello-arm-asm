@@ -1,3 +1,5 @@
+#include "uart.h"
+
 int init_uart();
 int write_string(char *str);
 int read_char();
@@ -12,7 +14,7 @@ int main() {
     for (;;) {
         char ch;
 
-        ch = read_char();
+        ch = uart_read_char();
         write_char(ch);
     }
 }

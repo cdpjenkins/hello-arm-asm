@@ -13,4 +13,3 @@ kernel_entry:
     mov sp, #0x80000
     bl main
     b end
-    
