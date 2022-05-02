@@ -15,6 +15,6 @@ int main() {
         char ch;
 
         ch = uart_read_char();
-        write_char(ch);
+        uart_write_char(ch);
     }
 }

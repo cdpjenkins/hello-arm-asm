@@ -14,42 +14,6 @@
 .global read_char
 .global init_uart
 
-
-read_char:
-    stp x29, x30, [sp, #-16]!
-
-1:
-    ldr x0, =UART0_FR
-    bl in_word
-
-    tst x0, (1 << 4)
-    bne 1b
-
-    ldr x0, =UART0_DR
-    bl in_word
-    
-    ldp x29, x30, [sp], #16
-    ret
-
-write_char:
-    stp x29, x30, [sp, #-16]!
-    str x0, [sp, #-16]!
-
-1:
-    ldr x0, =UART0_FR
-    bl in_word
-
-    tst x0, (1 << 5)
-    bne 1b
-
-    ldr x1, [sp]
-    ldr x0, =UART0_DR
-    bl out_word
-    
-    ldr x0, [sp], #16
-    ldp x29, x30, [sp], #16
-    ret
-
 write_string:
     stp x29, x30, [sp, #-16]!
     str x19, [sp, #-16]!
@@ -61,7 +25,7 @@ write_string:
     tst w0, w0
     beq 2f
 
-    bl write_char
+    bl uart_write_char
     b 1b
     
 2:
