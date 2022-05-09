@@ -23,3 +23,15 @@ void printk_uint32_hex(uint32_t x) {
 
     uart_write_string(buffer);
 }
+
+void printk_uint64_hex(uint64_t x) {
+    char buffer[17];
+    int i;
+
+    buffer[16] = '\0';
+    for (i = 15; i >= 0; i--, x /= 16) {
+        buffer[i] = to_hex_char(x % 16);
+    }
+
+    uart_write_string(buffer);
+}
