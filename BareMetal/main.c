@@ -1,4 +1,4 @@
-#include "uart.h"
+#include "printk.h"
 
 int init_uart();
 int write_string(char *str);
@@ -7,8 +7,8 @@ void write_char(int ch);
 
 int main() {
     uart_init();
-    uart_write_string("Hello from some C code!!!1\n\n\n");
-    uart_write_string("LOL here is another string\n");
+    printk_string("Hello from some C code!!!1\n\n\n");
+    printk_string("LOL here is another string\n");
 
     for (;;) {
         char ch;
