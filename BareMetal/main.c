@@ -1,4 +1,5 @@
 #include "kernstdlib.h"
+#include "asm.h"
 
 int init_uart();
 int write_string(char *str);
@@ -16,6 +17,10 @@ int main() {
         printk_uint64_hex(i);
         printk_string("\r\n");
     }
+
+    printk_string("currentel: ");
+    printk_uint64_dec(get_el());
+    printk_string("\n");
 
     ASSERT(0);
 
