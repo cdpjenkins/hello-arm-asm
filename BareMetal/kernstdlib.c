@@ -8,6 +8,10 @@ static inline char to_hex_char(int hex_digit) {
     }
 }
 
+static inline char to_dec_char(int digit) {
+    return digit + '0';
+}
+
 void printk_string(const char *str) {
     uart_write_string(str);
 }
@@ -34,6 +38,19 @@ void printk_uint64_hex(uint64_t x) {
     }
 
     uart_write_string(buffer);
+}
+
+void printk_uint64_dec(uint64_t x) {
+    char reverse_buffer[30];
+    int i;
+
+    for (i = 0; i < 30, x > 0; i++, x /= 10) {
+        reverse_buffer[i] = to_dec_char(x % 10);
+    }
+
+    for (; i >= 0; i--) {
+        uart_write_char(reverse_buffer[i]);
+    }
 }
 
 void memset(void *dst, int value, unsigned int size) {
@@ -81,7 +98,7 @@ void error_check(char *file, uint64_t line) {
     printk_string("Error in ");
     printk_string(file);
     printk_string(" at line ");
-    printk_uint64_hex(line);
+    printk_uint64_dec(line);
     printk_string("\n");
 
     while (1);
