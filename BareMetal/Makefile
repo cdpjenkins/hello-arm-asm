@@ -1,4 +1,4 @@
-OBJS=boot.o uart.o printk.o main.o
+OBJS=boot.o uart.o kernstdlib.o main.o
 CFLAGS=-O3 -std=c99 -ffreestanding -mgeneral-regs-only
 LDFLAGS=-nostdlib
 

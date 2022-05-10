@@ -1,4 +1,4 @@
-#include "printk.h"
+#include "kernstdlib.h"
 
 int init_uart();
 int write_string(char *str);
@@ -16,6 +16,8 @@ int main() {
         printk_uint64_hex(i);
         printk_string("\r\n");
     }
+
+    ASSERT(0);
 
     for (;;) {
         char ch;
