@@ -10,17 +10,17 @@ int main() {
     int64_t i;
 
     uart_init();
-    printk_string("Hello from some C code!!!1\n\n\n");
-    printk_string("LOL here is another string\n");
+    kprintf("Hello from some C code!!!1\n\n\n");
+    kprintf("LOL here is another string\n");
 
     for (i = 0; i < 4096; i++) {
         printk_uint64_hex(i);
         printk_string("\r\n");
     }
 
-    printk_string("currentel: ");
+    kprintf("currentel: ");
     printk_uint64_dec(get_el());
-    printk_string("\n");
+    kprintf("\n");
 
     ASSERT(0);
 

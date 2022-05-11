@@ -53,6 +53,14 @@ void printk_uint64_dec(uint64_t x) {
     }
 }
 
+int kprintf(const char *format, ...) {
+    const char *ptr;
+
+    for (ptr = format; *ptr != '\0'; ptr++) {
+        uart_write_char(*ptr);
+    }
+}
+
 void memset(void *dst, int value, unsigned int size) {
     char *dst_byte;
     int signed_size;
