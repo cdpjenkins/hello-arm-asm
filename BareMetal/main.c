@@ -14,8 +14,7 @@ int main() {
     kprintf("LOL here is another string\n");
 
     for (i = 0; i < 4096; i++) {
-        printk_uint64_hex(i);
-        printk_string("\r\n");
+        kprintf("%d\n", i);
     }
 
     kprintf("currentel: %d\n", get_el());
