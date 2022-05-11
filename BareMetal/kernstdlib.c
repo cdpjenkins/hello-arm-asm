@@ -54,10 +54,39 @@ void printk_uint64_dec(uint64_t x) {
 }
 
 int kprintf(const char *format, ...) {
-    const char *ptr;
+    const char *ptr = format;
+    va_list argp;
+    va_start(argp, format);
 
-    for (ptr = format; *ptr != '\0'; ptr++) {
-        uart_write_char(*ptr);
+    while (*ptr != '\0') {
+        if (*ptr == '%') {
+            char format_thang = *++ptr;
+            switch (format_thang) {
+                case 's': {
+                    char *str = va_arg(argp, char *);
+                    printk_string(str);
+                    break;
+                }
+                case 'X': {
+                    uint64_t val = va_arg(argp, uint64_t);
+                    printk_uint64_hex(val);
+                    break;
+                }
+                case 'U':
+                case 'd': {
+                    uint64_t val = va_arg(argp, uint64_t);
+                    printk_uint64_dec(val);
+                    break;
+                }
+                default:
+                    printk_string("%");
+                    break;
+            }
+        } else {
+            uart_write_char(*ptr);
+        }
+
+        ptr++;
     }
 }
 
@@ -103,11 +132,7 @@ int memcmp(void *dst, void *src, unsigned int size) {
 }
 
 void error_check(char *file, uint64_t line) {
-    printk_string("Error in ");
-    printk_string(file);
-    printk_string(" at line ");
-    printk_uint64_dec(line);
-    printk_string("\n");
+    kprintf("Error in %s at line %d\n", file, line);
 
     while (1);
 }

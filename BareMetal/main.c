@@ -18,8 +18,7 @@ int main() {
         printk_string("\r\n");
     }
 
-    kprintf("currentel: ");
-    printk_uint64_dec(get_el());
+    kprintf("currentel: %d\n", get_el());
     kprintf("\n");
 
     ASSERT(0);
