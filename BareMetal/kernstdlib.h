@@ -6,11 +6,6 @@
 
 #include "uart.h"
 
-void printk_string(const char *str);
-void printk_uint32_hex(uint32_t x);
-void printk_uint64_hex(uint64_t x);
-void printk_uint64_dec(uint64_t x);
-
 int kprintf(const char *format, ...);
 
 void memset(void *dst, int value, unsigned int size);

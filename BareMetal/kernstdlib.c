@@ -12,11 +12,11 @@ static inline char to_dec_char(int digit) {
     return digit + '0';
 }
 
-void printk_string(const char *str) {
+static void printk_string(const char *str) {
     uart_write_string(str);
 }
 
-void printk_uint32_hex(uint32_t x) {
+static void printk_uint32_hex(uint32_t x) {
     char buffer[9];
     int i;
 
@@ -28,7 +28,7 @@ void printk_uint32_hex(uint32_t x) {
     uart_write_string(buffer);
 }
 
-void printk_uint64_hex(uint64_t x) {
+static void printk_uint64_hex(uint64_t x) {
     char buffer[17];
     int i;
 
@@ -40,16 +40,20 @@ void printk_uint64_hex(uint64_t x) {
     uart_write_string(buffer);
 }
 
-void printk_uint64_dec(uint64_t x) {
+static void printk_uint64_dec(uint64_t x) {
     char reverse_buffer[30];
     int i;
 
-    for (i = 0; i < 30, x > 0; i++, x /= 10) {
-        reverse_buffer[i] = to_dec_char(x % 10);
-    }
+    if (x == 0) {
+        uart_write_char('0');
+    } else {
+        for (i = 0; i < 30, x > 0; i++, x /= 10) {
+            reverse_buffer[i] = to_dec_char(x % 10);
+        }
 
-    for (; i >= 0; i--) {
-        uart_write_char(reverse_buffer[i]);
+        for (; i >= 0; i--) {
+            uart_write_char(reverse_buffer[i]);
+        }
     }
 }
 
@@ -88,6 +92,8 @@ int kprintf(const char *format, ...) {
 
         ptr++;
     }
+
+    return 0;
 }
 
 void memset(void *dst, int value, unsigned int size) {
