@@ -35,5 +35,9 @@ el1_entry:
     sub x2, x2, x0
     bl memset
 
+    // set exception vectors
+    ldr x0, =vector_table
+    msr vbar_el1, x0
+
     bl main
     b end

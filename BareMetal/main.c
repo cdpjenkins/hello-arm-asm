@@ -18,9 +18,13 @@ int main() {
     }
 
     kprintf("currentel: %d\n", get_el());
-    kprintf("\n");
 
-    ASSERT(0);
+    char *p = (char *)0xFFFF000000000000;
+    *p = 1;
+
+    kprintf("Should not reach this point!\n");
+
+    // ASSERT(0);
 
     for (;;) {
         char ch;
