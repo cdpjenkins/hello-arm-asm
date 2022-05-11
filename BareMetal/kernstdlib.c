@@ -51,7 +51,7 @@ static void printk_uint64_dec(uint64_t x) {
             reverse_buffer[i] = to_dec_char(x % 10);
         }
 
-        for (; i >= 0; i--) {
+        for (i = i - 1; i >= 0; i--) {
             uart_write_char(reverse_buffer[i]);
         }
     }
