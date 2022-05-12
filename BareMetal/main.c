@@ -14,7 +14,8 @@ int main() {
     kprintf("Hello from some C code!!!1\n\n\n");
     kprintf("LOL here is another string\n");
 
-    init_timer();
+    // init_timer();
+    init_interrupt_controller();
     enable_irq();
 
     kprintf("currentel: %d\n", get_el());
@@ -29,6 +30,4 @@ int main() {
 
     char *p = (char *)0xFFFF000000000000;
     *p = 1;
-
-
 }

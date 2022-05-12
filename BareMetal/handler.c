@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "kernstdlib.h"
 #include "handler.h"
+#include "asm.h"
 
 static uint32_t timer_interval = 0;
 static uint32_t ticks = 0;
@@ -19,8 +20,14 @@ static void timer_interrupt_handler(void)
     }
 }
 
+static uint32_t get_irq_number() {
+    return *IRQ_BASIC_PENDING;
+}
+
 void handler(uint64_t numid, uint64_t esr, uint64_t elr) {
     uint32_t irq;
+
+    kprintf("stour ston\n");
 
     switch (numid) {
         case 1:
@@ -31,8 +38,11 @@ void handler(uint64_t numid, uint64_t esr, uint64_t elr) {
             irq = *CNTP_STATUS_EL0;
             if (irq & (1 << 1)) {
                 timer_interrupt_handler();
-            }
-            else {
+            } else if (get_irq_number() & (1 << 19)) {
+                kprintf("lalalala ston\n");
+
+                uart_handler();
+            } else {
                 kprintf("unknown irq\n");
                 while (1) { }
             }
@@ -55,4 +65,12 @@ void init_timer(void)
     timer_interval = read_timer_freq() / 100;
     enable_timer();
     *CNTP_EL0 = (1 << 1);
+}
+
+void init_interrupt_controller() {
+    *DISABLE_BASIC_IRQS = 0xffffffff;
+    *DISABLE_IRQS_1 = 0xffffffff;
+    *DISABLE_IRQS_2 = 0xffffffff;
+
+    *ENABLE_IRQS_2 = (1 << 25);
 }

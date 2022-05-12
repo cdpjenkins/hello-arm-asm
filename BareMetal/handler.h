@@ -4,13 +4,24 @@
 #include <stdint.h>
 
 #define CNTP_EL0 ((uint32_t *)(0x40000040))
-
 #define CNTP_STATUS_EL0 ((uint32_t *) 0x40000060)
+
+#define BASE_ADDR 0x3f000000
+
+#define IRQ_BASIC_PENDING       ((volatile uint32_t *)(BASE_ADDR + 0xB200))
+#define ENABLE_IRQS_1           ((volatile uint32_t *)(BASE_ADDR + 0xB210))
+#define ENABLE_IRQS_2           ((volatile uint32_t *)(BASE_ADDR + 0xB214))
+#define ENABLE_BASIC_IRQS       ((volatile uint32_t *)(BASE_ADDR + 0xB218))
+#define DISABLE_IRQS_1          ((volatile uint32_t *)(BASE_ADDR + 0xB21C))
+#define DISABLE_IRQS_2          ((volatile uint32_t *)(BASE_ADDR + 0xB220))
+#define DISABLE_BASIC_IRQS      ((volatile uint32_t *)(BASE_ADDR + 0xB224))
+
 
 // c
 uint64_t read_timer_freq();
 uint64_t read_timer_value();
 void init_timer(void);
+void init_interrupt_controller();
 
 // asm
 void enable_timer();

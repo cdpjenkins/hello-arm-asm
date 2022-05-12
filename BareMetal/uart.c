@@ -1,60 +1,54 @@
-typedef struct {
-    volatile unsigned int dr;
-    volatile unsigned int rsrecr;
-    volatile unsigned char padding[0x10];
-    volatile unsigned int fr;
-    volatile unsigned int ilpr;
-    volatile unsigned int ibrd;
-    volatile unsigned int fbrd;
-    volatile unsigned int lcrh;
-    volatile unsigned int cr;
-    volatile unsigned int ifls;
-    volatile unsigned int imsc;
-    volatile unsigned int ris;
-    volatile unsigned int mis;
-    volatile unsigned int icr;
-    volatile unsigned int dmacr;
-    // there are loads more regs that we don't use
-} UART_Registers;
+#include <stdint.h>
+
+#include "asm.h"
+#include "kernstdlib.h"
 
 #define bit(n)          (1 << n)
+
+#define IO_BASE_ADDR    0x3f200000
+
+#define UART0_DR        ((volatile uint32_t *)(IO_BASE_ADDR + 0x1000))
+#define UART0_FR        ((volatile uint32_t *)(IO_BASE_ADDR + 0x1018))
+    #define BUSY      bit(3)
+#define UART0_CR        ((volatile uint32_t *)(IO_BASE_ADDR + 0x1030))
+    #define UARTEN    bit(0)
+    #define TXE       bit(8)
+    #define RXE       bit(9)
+#define UART0_LCRH      ((volatile uint32_t *)(IO_BASE_ADDR + 0x102c))
+    #define WLEN_8_BITS     (0b11 << 6)
+#define UART0_FBRD      ((volatile uint32_t *)(IO_BASE_ADDR + 0x1028))
+#define UART0_IBRD      ((volatile uint32_t *)(IO_BASE_ADDR + 0x1024))
+#define UART0_IMSC      ((volatile uint32_t *)(IO_BASE_ADDR + 0x1038))
+    #define RXIM      bit(4)
+#define UART0_MIS       ((volatile uint32_t *)(IO_BASE_ADDR + 0x1040))
+#define UART0_ICR       ((volatile uint32_t *)(IO_BASE_ADDR + 0x1044))
+
 
 #define RXFE            bit(4)
 #define TXFF            bit(5)
 
 #define FEN             bit(4)
-#define WLEN_8_BITS     (0b11 << 6)
-
-#define UARTEN          bit(0)
-#define TXE             bit(8)
-#define RXE             bit(9)
 
 #define IO_BASE_ADDR    0x3f200000
-#define UART0 ((UART_Registers *) (IO_BASE_ADDR + 0x1000))
+// #define UART0 ((UART_Registers *) (IO_BASE_ADDR + 0x1000))
 
 void uart_init() {
-    UART0->cr = 0;
-
-    // Setting the baud rate here
-    UART0->ibrd = 26;
-    UART0->fbrd = 0;
-
-    UART0->lcrh = FEN | WLEN_8_BITS;
-    UART0->imsc = 0;
-    UART0->cr = UARTEN | TXE | RXE;
+    *UART0_CR = 0;
+    *UART0_IBRD = 26;
+    *UART0_FBRD = 0;
+    *UART0_LCRH = WLEN_8_BITS;
+    *UART0_IMSC = RXIM;
+    *UART0_CR = UARTEN | TXE | RXE;
 }
 
 int uart_read_char() {
-    while (UART0->fr & RXFE) { } // wait until we actually have a char to read
-
-
-    return UART0->dr;
+    return *UART0_DR;
 }
 
 void uart_write_char(unsigned int ch) {
-    while (UART0->fr & TXFF) { } // wait until there is room in the transmit FIFO for our char
+    while (*UART0_FR & BUSY) { }
 
-    UART0->dr = ch;
+    *UART0_DR = ch;
 }
 
 void uart_write_string(const char *str) {
@@ -62,5 +56,19 @@ void uart_write_string(const char *str) {
 
     while (ch = *str++) {
         uart_write_char(ch);
+    }
+}
+
+void uart_handler() {
+    uint32_t status = *UART0_MIS;
+
+    if (status & bit(4)) {
+        char in_char = uart_read_char();
+
+        kprintf("got a char: %d\n", in_char);
+
+        // uart_write_char(in_char);
+
+        *UART0_ICR = bit(4);
     }
 }
