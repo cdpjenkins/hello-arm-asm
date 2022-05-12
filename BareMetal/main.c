@@ -1,5 +1,6 @@
 #include "kernstdlib.h"
 #include "asm.h"
+#include "handler.h"
 
 int init_uart();
 int write_string(char *str);
@@ -13,23 +14,21 @@ int main() {
     kprintf("Hello from some C code!!!1\n\n\n");
     kprintf("LOL here is another string\n");
 
-    for (i = 0; i < 4096; i++) {
-        kprintf("%d\n", i);
-    }
+    init_timer();
+    enable_irq();
 
     kprintf("currentel: %d\n", get_el());
+
+    kprintf("timer frequency: %d\n", read_timer_freq());
+    kprintf("timer value: %d\n", read_timer_value);
+
+    while (1) ;
+
+    kprintf("Should not reach this point!\n");
+
 
     char *p = (char *)0xFFFF000000000000;
     *p = 1;
 
-    kprintf("Should not reach this point!\n");
 
-    // ASSERT(0);
-
-    for (;;) {
-        char ch;
-
-        ch = uart_read_char();
-        uart_write_char(ch);
-    }
 }

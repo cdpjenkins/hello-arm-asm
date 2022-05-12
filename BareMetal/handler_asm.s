@@ -40,6 +40,12 @@
 
 .section    .text
 .global     vector_table
+.global     read_timer_freq
+.global     read_timer_value
+.global     enable_irq
+.global     enable_timer
+.global     read_timer_status
+.global     set_timer_interval
 
 .balign     0x800
 vector_table:
@@ -68,7 +74,7 @@ current_el_spn_sync:
 
 .balign     0x80
 current_el_spn_irq:
-    b   error
+    b   irq_handler
 
 .balign     0x80
 current_el_spn_fiq:
@@ -114,6 +120,15 @@ lower_el_aarch32_fiq:
 lower_el_aarch32_serror:
     b   error
 
+irq_handler:
+    exception_save_regs
+    mov x0, #2
+    mrs x1, esr_el1
+    mrs x2, elr_el1
+    bl handler
+    exception_restore_regs
+    eret
+
 
 sync_handler:
     exception_save_regs
@@ -130,3 +145,38 @@ error:
     bl handler
     exception_restore_regs
     eret
+
+read_timer_freq:
+    mrs x0, CNTFRQ_EL0
+    ret
+
+read_timer_value:
+    isb
+    mrs x0, CNTPCT_EL0
+    ret
+
+set_timer_interval:
+    msr CNTP_TVAL_El0, x0
+    ret
+
+enable_timer:
+    stp x29, x30, [sp, #-16]!
+
+    bl read_timer_freq
+    mov x1, #100
+    udiv x0, x0, x1
+    bl set_timer_interval
+
+    mov x0, #1
+    msr CNTP_CTL_EL0, x0
+
+    ldp x29, x30, [sp], #16
+    ret
+
+read_timer_status:
+    mrs x0, CNTP_CTL_EL0
+    ret
+
+enable_irq:
+    msr daifclr, #2
+    ret
