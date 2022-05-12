@@ -21,8 +21,9 @@
 #define UART0_IMSC      ((volatile uint32_t *)(IO_BASE_ADDR + 0x1038))
     #define RXIM      bit(4)
 #define UART0_MIS       ((volatile uint32_t *)(IO_BASE_ADDR + 0x1040))
+    #define RXMIS     bit(4)
 #define UART0_ICR       ((volatile uint32_t *)(IO_BASE_ADDR + 0x1044))
-
+    #define RXIC      bit(4)
 
 #define RXFE            bit(4)
 #define TXFF            bit(5)
@@ -62,13 +63,17 @@ void uart_write_string(const char *str) {
 void uart_handler() {
     uint32_t status = *UART0_MIS;
 
-    if (status & bit(4)) {
+    if (status & RXMIS) {
         char in_char = uart_read_char();
 
-        kprintf("got a char: %d\n", in_char);
+        // kprintf("got a char: %d\n", in_char);
 
-        // uart_write_char(in_char);
+        if (in_char == '\r') {
+            uart_write_char('\n');
+        } else {
+            uart_write_char(in_char);
+        }
 
-        *UART0_ICR = bit(4);
+        *UART0_ICR = RXIC;
     }
 }

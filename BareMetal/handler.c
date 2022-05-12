@@ -27,8 +27,6 @@ static uint32_t get_irq_number() {
 void handler(uint64_t numid, uint64_t esr, uint64_t elr) {
     uint32_t irq;
 
-    kprintf("stour ston\n");
-
     switch (numid) {
         case 1:
             kprintf("sync error at %X: %X\n", elr, esr);
@@ -39,8 +37,6 @@ void handler(uint64_t numid, uint64_t esr, uint64_t elr) {
             if (irq & (1 << 1)) {
                 timer_interrupt_handler();
             } else if (get_irq_number() & (1 << 19)) {
-                kprintf("lalalala ston\n");
-
                 uart_handler();
             } else {
                 kprintf("unknown irq\n");
