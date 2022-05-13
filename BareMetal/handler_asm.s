@@ -88,11 +88,11 @@ current_el_spn_serror:
 
 .balign     0x80
 lower_el_aarch64_sync:
-    b   error
+    b   sync_handler
 
 .balign     0x80
 lower_el_aarch64_irq:
-    b   error
+    b   irq_handler
 
 .balign     0x80
 lower_el_aarch64_fiq:
@@ -133,7 +133,7 @@ irq_handler:
 sync_handler:
     exception_save_regs
     mov x0, #1
-    mrs x1, esr_el1
+    mrs x1, spsr_el1
     mrs x2, elr_el1
     bl handler
     exception_restore_regs

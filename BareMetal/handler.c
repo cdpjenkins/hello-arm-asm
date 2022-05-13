@@ -24,12 +24,12 @@ static uint32_t get_irq_number() {
     return *IRQ_BASIC_PENDING;
 }
 
-void handler(uint64_t numid, uint64_t esr, uint64_t elr) {
+void handler(uint64_t numid, uint64_t spsr, uint64_t elr) {
     uint32_t irq;
 
     switch (numid) {
         case 1:
-            kprintf("sync error at %X: %X\n", elr, esr);
+            kprintf("sync error at %X: %X\n", elr, spsr);
             while (1) ;
             break;
         case 2:
@@ -46,6 +46,7 @@ void handler(uint64_t numid, uint64_t esr, uint64_t elr) {
 
         default:
             kprintf("unknown exception: %d\n", numid);
+            kprintf("%X: %X\n", elr, spsr);
             while (1) ;
             break;
     }

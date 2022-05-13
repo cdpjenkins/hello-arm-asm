@@ -24,7 +24,6 @@ kernel_entry:
     msr elr_el2, x0
     eret
 el1_entry:
-
     // setup initial stack pointer
     mov sp, #0x80000
 
@@ -39,5 +38,13 @@ el1_entry:
     ldr x0, =vector_table
     msr vbar_el1, x0
 
-    bl main
+    bl kernel_main
+
+    // switch to EL0
+    mov x0, #0
+    msr spsr_el1, x0
+    adr x0, el0_entry
+    msr elr_el1, x0
+    eret
+el0_entry:
     b end
