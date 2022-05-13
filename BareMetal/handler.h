@@ -3,10 +3,12 @@
 
 #include <stdint.h>
 
-#define CNTP_EL0 ((uint32_t *)(0x40000040))
-#define CNTP_STATUS_EL0 ((uint32_t *) 0x40000060)
+#include "memory.h"
 
-#define BASE_ADDR 0x3f000000
+#define CNTP_EL0 ((uint32_t *)          P2V(0x40000040))
+#define CNTP_STATUS_EL0 ((uint32_t *)   P2V(0x40000060))
+
+#define BASE_ADDR                       P2V(0x3f000000)
 
 #define IRQ_BASIC_PENDING       ((volatile uint32_t *)(BASE_ADDR + 0xB200))
 #define ENABLE_IRQS_1           ((volatile uint32_t *)(BASE_ADDR + 0xB210))

@@ -27,6 +27,9 @@ el1_entry:
     // setup initial stack pointer
     mov sp, #0x80000
 
+    bl setup_vm
+    bl enable_mmu
+
     // zero the whole BSS
     ldr x0, =bss_start
     ldr x1, #0
@@ -38,7 +41,11 @@ el1_entry:
     ldr x0, =vector_table
     msr vbar_el1, x0
 
-    bl kernel_main
+    mov x0, 0xFFFF000000000000
+    add sp, sp, x0
+
+    ldr x0, =kernel_main
+    blr x0
 
     // switch to EL0
     mov x0, #0

@@ -2,10 +2,11 @@
 
 #include "asm.h"
 #include "kernstdlib.h"
+#include "memory.h"
 
 #define bit(n)          (1 << n)
 
-#define IO_BASE_ADDR    0x3f200000
+#define IO_BASE_ADDR    P2V(0x3f200000)
 
 #define UART0_DR        ((volatile uint32_t *)(IO_BASE_ADDR + 0x1000))
 #define UART0_FR        ((volatile uint32_t *)(IO_BASE_ADDR + 0x1018))
@@ -29,9 +30,6 @@
 #define TXFF            bit(5)
 
 #define FEN             bit(4)
-
-#define IO_BASE_ADDR    0x3f200000
-// #define UART0 ((UART_Registers *) (IO_BASE_ADDR + 0x1000))
 
 void uart_init() {
     *UART0_CR = 0;
