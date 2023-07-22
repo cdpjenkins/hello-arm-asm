@@ -71,14 +71,14 @@ static void print_hailstone_numbers() {
 }
 
 int main() {
-  // print_triangle_numbers_by_addition();
-  // print_triangle_numbers_by_multiplication();
-  // try_division();
-  // print_max();
-  // print_hailstone_numbers();
+  print_triangle_numbers_by_addition();
+  print_triangle_numbers_by_multiplication();
+  try_division();
+  print_max();
+  print_hailstone_numbers();
 
-  int x = identity_function(12);
-  printf("x==%d\n", x);
+  // int x = identity_function(12);
+  // printf("x==%d\n", x);
 
   return 0;
 }
