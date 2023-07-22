@@ -6,6 +6,7 @@ var2: .word 4
 .globl triangle_numbers_by_addition
 .globl triangle_numbers_by_multiplication
 .globl divide_me_do
+.globl identity_function
 
 triangle_numbers_by_addition:
     push {fp, lr}
@@ -29,4 +30,7 @@ triangle_numbers_by_multiplication:
 
 divide_me_do:
     udiv r0, r0, r1
+    bx lr
+
+identity_function:
     bx lr
