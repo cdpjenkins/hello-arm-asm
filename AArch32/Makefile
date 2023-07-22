@@ -1,3 +1,13 @@
+UNAME := $(shell uname)
+ifeq ($(UNAME),Linux)
+	TOOLCHAIN_PREFIX=arm-linux-gnueabihf
+endif
+ifeq ($(UNAME),Darwin)
+	TOOLCHAIN_PREFIX=armv8-rpi3-linux-gnueabihf
+endif
+
+CC = $(TOOLCHAIN_PREFIX)-gcc
+AS = $(TOOLCHAIN_PREFIX)-as
 OBJS = hello.o main.o find_max.o hailstone.s
 CFLAGS = -g -O3
 
@@ -7,11 +17,11 @@ clean:
 	rm hello *.o
 
 hello: $(OBJS)
-	gcc -o hello $(OBJS) -lgcc
+	$(CC) -o hello $(OBJS) -lgcc
 
 %.o: %.s *.h
-	as -g -o $@ $<
+	$(AS) -g -o $@ $<
 
 main.o: main.c
-	gcc $(CFLAGS) -c main.c
+	$(CC) $(CFLAGS) -c main.c
 
