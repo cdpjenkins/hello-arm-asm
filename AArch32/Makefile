@@ -9,7 +9,9 @@ endif
 CC = $(TOOLCHAIN_PREFIX)-gcc
 AS = $(TOOLCHAIN_PREFIX)-as
 OBJS = hello.o main.o find_max.o hailstone.s
-CFLAGS = -g -O3
+# The gcc-10-arm-linux-gnueabihf toolchain in Raspbian 64 bit  appears to generate Thumb binaries by
+# default unless you tell it otherwise. I have no idea why this is.
+CFLAGS = -g -O2 -v -marm
 
 all: hello
 
